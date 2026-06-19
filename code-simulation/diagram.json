@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "author": "Esteban Carnuccio",
+    "editor": "wokwi",
+    "parts": [
+        {
+            "type": "wokwi-esp32-devkit-v1",
+            "id": "esp",
+            "top": 0,
+            "left": 0,
+            "attrs": {}
+        },
+        {
+            "type": "wokwi-buzzer",
+            "id": "bz1",
+            "top": -74.4,
+            "left": 126.6,
+            "attrs": { "volume": "0.1" }
+        },
+        {
+            "type": "wokwi-gas-sensor",
+            "id": "gas1",
+            "top": 50.7,
+            "left": -223.4,
+            "attrs": {}
+        },
+        {
+            "type": "wokwi-dht22",
+            "id": "dht1",
+            "top": -28.5,
+            "left": 205.8,
+            "attrs": {}
+        }
+    ],
+    "connections": [
+        ["esp:TX0", "$serialMonitor:RX", "", []],
+        ["esp:RX0", "$serialMonitor:TX", "", []],
+        ["bz1:1", "esp:GND.1", "black", ["v86.4", "v53"]],
+        ["esp:D15", "bz1:2", "red", ["h0"]],
+        ["esp:D15", "dht1:VCC", "red", ["h0"]],
+        ["dht1:GND", "esp:GND.1", "black", ["v0"]],
+        ["dht1:SDA", "esp:D4", "violet", ["v0"]],
+        ["esp:VIN", "gas1:VCC", "red", ["h0"]],
+        ["esp:GND.2", "gas1:GND", "black", ["h-43.4", "v-42.6"]],
+        ["gas1:AOUT", "esp:D32", "violet", ["h0"]]
+    ],
+    "dependencies": {}
+}
