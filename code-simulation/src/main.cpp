@@ -19,7 +19,8 @@ const char* WIFI_PASSWORD = "";
 #define DHT_TYPE DHT22
 DHT dht(DHT_PIN, DHT_TYPE);
 
-const float TEMP_THRESHOLD  = 35.0;
+const float TEMP_THRESHOLD  = 38.0;
+const float HUMIDITY_THRESHOLD = 35.0;
 
 // Threshold
 const int GAS_NORMAL = 2500;
@@ -170,10 +171,17 @@ void updateSensors() {
 }
 
 void determineStatus() {
-  if (sensor.smokeLevel == "Tinggi" && sensor.temperature > TEMP_THRESHOLD) {
+  bool suhuTinggi       = sensor.temperature > TEMP_THRESHOLD;
+  bool kelembabanRendah = sensor.humidity < HUMIDITY_THRESHOLD;
+  bool asapTinggi       = sensor.smokeLevel == "Tinggi";
+  bool asapSedang       = sensor.smokeLevel == "Sedang";
+
+  if (asapTinggi && suhuTinggi) {
     sensor.status = "Potensi Kebakaran";
-  } else if (sensor.smokeLevel == "Sedang" || sensor.smokeLevel == "Tinggi") {
-    sensor.status = "Asap Terdeteksi";
+  } else if (suhuTinggi && kelembabanRendah) {
+    sensor.status = "Potensi Kebakaran";
+  } else if (asapTinggi || suhuTinggi || asapSedang) {
+    sensor.status = "Asap Terdeteksi"; 
   } else {
     sensor.status = "Aman";
   }
